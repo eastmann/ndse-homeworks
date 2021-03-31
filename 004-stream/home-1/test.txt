@@ -1,0 +1,6 @@
+2021.03.31 19:27:12,Computer,1,Player,1
+2021.03.31 19:27:16,Computer,1,Player,0
+2021.03.31 19:27:18,Computer,1,Player,0
+2021.03.31 19:27:19,Computer,1,Player,1
+2021.03.31 19:27:21,Computer,0,Player,1
+2021.03.31 19:27:23,Computer,0,Player,1
