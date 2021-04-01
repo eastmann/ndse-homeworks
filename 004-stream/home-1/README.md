@@ -2,7 +2,7 @@
 
 **Запук программы:**
 * node <script> <command> [option]
-* Например: node app log --filename="test.txt"
+* Например: node app log --filename="log.csv"
 
 **Выбрать вариант ответа:**
 * Бросаем монетку... Ваш выбор: "орёл" (0) или "решка" (1) ?

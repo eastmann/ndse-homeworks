@@ -21,9 +21,9 @@ yargs.command({
 fs.createReadStream(path.resolve(yargs.argv.filename))
     .pipe(csv(['date', 'time', 'computer', 'computerScore', 'user', 'userScore']))
     .on('data', data => results.push(data))
-    .on('end', () => parse(results))
+    .on('end', () => parseResults(results))
 
-function parse(results) {
+function parseResults(results) {
     const totalScore = results.length
     const winScore = results.filter(result => {
         return parseInt(result.userScore) === parseInt(result.computerScore)
