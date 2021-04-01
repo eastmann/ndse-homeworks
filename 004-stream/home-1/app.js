@@ -19,27 +19,14 @@ yargs.command({
     }
 })
 
-const date = new Date()
-const dateConfig = {
-    year: date.getFullYear(),
-    month: date.getMonth() + 1,
-    date: date.getDate(),
-    hour: date.getHours(),
-    minutes: date.getMinutes(),
-    seconds: date.getSeconds()
-}
-
 function getDate() {
-    let formattedDate = ''
+    const OPTIONS = {
+        hour12: false,
+        dateStyle: 'short',
+        timeStyle: 'medium',
+    }
 
-    formattedDate += dateConfig.year + '.'
-    formattedDate += dateConfig.month < 10 ? '0' + dateConfig.month + '.' : dateConfig.month + '.'
-    formattedDate += dateConfig.date < 10 ? '0' + dateConfig.date + ' ' : dateConfig.date + ' '
-    formattedDate += dateConfig.hour < 10 ? '0' + dateConfig.hour + ':' : dateConfig.hour + ':'
-    formattedDate += dateConfig.minutes < 10 ? '0' + dateConfig.minutes + ':' : dateConfig.minutes + ':'
-    formattedDate += dateConfig.seconds < 10 ? '0' + dateConfig.seconds : dateConfig.seconds
-
-    return formattedDate
+    return new Date().toLocaleString('ru-RU', OPTIONS)
 }
 
 function tossCoin() {
@@ -47,17 +34,15 @@ function tossCoin() {
 }
 
 rl.question(`Бросаем монетку... Ваш выбор: "орёл" (0) или "решка" (1) ? \n> `, userAnswer => {
-    let user = parseInt(userAnswer)
-    let coin = tossCoin()
+    const ANSWER = parseInt(userAnswer)
+    const COIN = tossCoin()
     let results = getDate()
 
-    if (parseInt(user) === coin) {
-        console.log(`Вы угадали! Выпало ${coin}`)
-    } else {
-        console.log(`Вы ошиблись! Выпало ${coin}. Попробуйте ещё раз.`)
-    }
+    ANSWER === COIN
+        ? console.log(`Вы угадали! Выпало ${COIN}`)
+        : console.log(`Вы ошиблись! Выпало ${COIN}. Попробуйте ещё раз.`)
 
-    results += `,Computer,${coin},Player,${user}`
+    results += `, Computer, ${COIN}, Player, ${ANSWER}`
 
     fs.appendFile(yargs.argv.filename, `${results}\n`, err => {
         if (err) throw err
