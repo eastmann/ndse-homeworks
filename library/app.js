@@ -1,5 +1,6 @@
 const express = require('express')
 const formData = require('express-form-data')
+const multer = require('multer')
 
 const { Book } = require('./models')
 const db = {
@@ -7,6 +8,7 @@ const db = {
 }
 
 const app = express()
+const router = express.Router()
 
 function getIndex(array, id) {
     return array.findIndex(item => item.id === id)
