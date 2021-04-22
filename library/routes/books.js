@@ -12,6 +12,12 @@ function getIndex(array, id) {
     return array.findIndex(item => item.id === id)
 }
 
+function getBookFile(req, books) {
+    const selectedBook = books.filter(book => book.id === req.params.id)
+    const file = `public/uploads/${selectedBook[0].fileBook}`
+    return file
+}
+
 router.get('/', (req, res) => {
     const { books } = db
 
@@ -38,9 +44,10 @@ router.get('/:id', (req, res) => {
     }
 })
 
-router.post('/', (req, res) => {
+router.post('/', upload.single('book'), (req, res) => {
     const { books } = db
-    const { title, description, authors, favorite, fileCover, fileName, fileBook } = req.body
+    const { title, description, authors, favorite, fileCover, fileName } = req.body
+    const fileBook = req.file ? req.file.filename : null
     const book = new Book(title, description, authors, favorite, fileCover, fileName, fileBook)
     books.push(book)
 
@@ -48,10 +55,11 @@ router.post('/', (req, res) => {
     res.json(book)
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', upload.single('book'), (req, res) => {
     const { books } = db
     const { id } = req.params
-    const { title, description, authors, favorite, fileCover, fileName, fileBook } = req.body
+    const { title, description, authors, favorite, fileCover, fileName } = req.body
+    const fileBook = req.file ? req.file.filename : null
     const bookIndex = getIndex(books, id)
 
     if (bookIndex === -1) {
@@ -84,25 +92,16 @@ router.delete('/:id', (req, res) => {
     }
 })
 
-router.post('/upload', upload.single('fileBook'), (req, res) => {
-    // debug
-    console.log('multer', req.file)
-    console.log('multer', req.files)
+router.get('/:id/download', (req, res) => {
+    const { books } = db
 
-    if (req.file) {
-        const { path } = req.file
-        console.log(path)
-
-        res.json(path)
+    if (books.length) {
+        res.download(getBookFile(req, books), err => {
+            if (err) res.status(404).json()
+        })
     } else {
-        res.json(null)
+        res.status(404).json(`Книги отсутствуют!`)
     }
-})
-
-router.post('/:id/download', (req, res) => {
-    res.download(__dirname + '../public/uploads/', 'book.txt', err => {
-        if (err) res.status(404).json()
-    })
 })
 
 module.exports = router
