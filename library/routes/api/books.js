@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
-const upload = require('../middlware/file')
+const upload = require('../../middlware/file')
 
-const { Book } = require('../models')
+const { Book } = require('../../models')
 const db = {
     books: []
 }

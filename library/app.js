@@ -5,17 +5,21 @@ const cors = require('cors')
 const middleWareNotFound = require('./middlware/404')
 const middleWareServerError = require('./middlware/500')
 
-const routeBooks = require('./routes/books')
+const routeIndex = require('./routes/index')
 const routeUser = require('./routes/user')
+const routeAPIBooks = require('./routes/api/books')
 
 const app = express()
+
+app.set('view engine', 'ejs')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors())
 
 app.use('/public', express.static(path.join(__dirname, '/public')))
-app.use('/api/books', routeBooks)
+app.use('/', routeIndex)
+app.use('/api/books', routeAPIBooks)
 app.use('/api/user', routeUser)
 
 app.use(middleWareNotFound)
